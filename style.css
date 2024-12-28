@@ -1,0 +1,18 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #10b981;
+}
+
+.container {
+    display: grid;
+    grid-template: repeat(3, 300px) / repeat(3, 300px);
+    margin: auto;
+}
+
+.cell {
+    border: 10px solid black;
+}
