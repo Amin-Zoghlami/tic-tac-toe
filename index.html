@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button class="start">start</button>
     <div class="result"></div>
+    <button class="new-game">New Game</button>
     <div class="container">
         <div class="cell" data-index="0">
         </div>
@@ -29,6 +29,15 @@
         <div class="cell" data-index="8">
         </div>
     </div>
+    <dialog>
+        <form class="names">
+            <label for="player1-name">X's choose your name</label>
+            <input type="text" id="player1-name" name="player1-name">
+            <label for="player2-name">O's choose your name</label>
+            <input type="text" id="player2-name" name="player2-name">
+            <button class="start-game" type="submit">Start Game</button>
+        </form>
+    </dialog>
     <script src="script.js"></script>
 </body>
 </html>

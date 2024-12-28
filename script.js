@@ -1,13 +1,9 @@
 const gameBoard = (function () {
     const board = new Array(9).fill("");
     
-    const get = () => board;
+    const get = () => [...board];
     
     const getCell = (cell) => board[cell];
-
-    const reset = () => {
-        board.fill("");
-    };
 
     const changeCell = (symbol, cell) => {
         if (gameBoard.getCell(cell) !== "") {
@@ -16,25 +12,33 @@ const gameBoard = (function () {
 
         board[cell] = symbol;
     };
-    
-    return {get, getCell, reset, changeCell};
+
+    const reset = () => {
+        board.fill("");
+    };
+
+    return {get, getCell, changeCell, reset};
 })();
  
 const gameFlow = (function () {
-    let player1 = {};
-    let player2 = {};
-    let turn = 1;
-    
+    const players = [];
+    let player1;
+    let player2;
+    let currentPlayerNumber;
+
     const start = (name1, name2) => {
-        player1 = createPlayer(name1, "X");
-        player2 = createPlayer(name2, "O");
+        players.push(createPlayer(name1, "X"));
+        players.push(createPlayer(name2, "O"));
+        console.log(players);
+        currentPlayerNumber = 0;
     }
 
     const reset = () => {
         gameBoard.reset();
-        player1 = {};
-        player2 = {};
-        turn = 1;
+        players.length = 0;
+        player1 = undefined;
+        player2 = undefined;
+        currentPlayerNumber = undefined;
     }
     
     const checkResult = (board) => checkResultHelper(board);
@@ -44,22 +48,15 @@ const gameFlow = (function () {
             return;
         }
 
-        if (turn % 2 == 1) {
-            player1.chooseCell(cell);
-            turn++;
-            console.log(gameBoard.get());
-            if (checkResult(gameBoard.get()) !== "ongoing") {
-                alert(player1.name + checkResult(gameBoard.get()));
-                gameFlow.reset();
-            }
-            return;
-        } 
-
-        player2.chooseCell(cell); 
-        turn++;
+        const currentPlayer = players[currentPlayerNumber];
+        currentPlayer.chooseCell(cell);
+        currentPlayerNumber++;
+        if (currentPlayerNumber >= players.length) {
+            currentPlayerNumber = 0;
+        }
         if (checkResult(gameBoard.get()) !== "ongoing") {
-            alert(player2.name + checkResult(gameBoard.get()));
-            gameFlow.reset();
+           alert(currentPlayer.name + checkResult(gameBoard.get()));
+           displayControl.removeCellInputs();
         }
     }
     return {start, reset, checkResult, playTurn};
@@ -67,31 +64,56 @@ const gameFlow = (function () {
 
 const displayControl = (function () { 
     
-    const start = document.querySelector(".start");
-    start.addEventListener("click", () => {
-        gameFlow.start("AMIN","NARUTO");
+    const dialog = document.querySelector("dialog");
+    dialog.showModal();
+    
+    const startGame = document.querySelector(".start-game");
+    startGame.addEventListener("click", (event) => {
+        event.preventDefault();
+        const player1Name = document.getElementById("player1-name").value;
+        const player2Name = document.getElementById("player2-name").value;
+        gameFlow.start(player1Name, player2Name);
         addCellInputs();
+        dialog.close();
     });
 
+    const newGame = document.querySelector(".new-game");
+    newGame.addEventListener("click", (event) => {
+        gameFlow.reset();
+        showBoard();
+        dialog.showModal();
+    });
     
+    const inputs = document.querySelectorAll(".cell");
+    function inputEvent(event) {
+        const cell = event.currentTarget;
+        gameFlow.playTurn(cell.dataset.index);
+        showCell(cell.dataset.index);
+    }
+
     const addCellInputs = () => {
-        const inputs = document.querySelectorAll(".cell");
         inputs.forEach((input) => {
-            input.addEventListener("click", (event) => {
-                const cell = event.currentTarget;
-                gameFlow.playTurn(cell.dataset.index);
-                showBoard();
-            });
+            input.addEventListener("click", inputEvent);
+        });
+    }
+
+    const removeCellInputs = () => {
+        inputs.forEach((input) => {
+            input.removeEventListener("click", inputEvent);
         });
     }
 
     const showBoard = () => {
         for (let i = 0; i < 9; i++) {
-            document.querySelector(`div[data-index="${i}"]`).textContent = gameBoard.get()[i];
+            document.querySelector(`div[data-index="${i}"]`).textContent = gameBoard.getCell(i);
         }
     }
 
-    return {addCellInputs, showBoard};
+    const showCell = (cell) => {
+        document.querySelector(`div[data-index="${cell}"]`).textContent = gameBoard.getCell(cell);
+    }
+
+    return {addCellInputs, removeCellInputs, showBoard, showCell};
 })();
 
 function createPlayer(name, symbol) { 

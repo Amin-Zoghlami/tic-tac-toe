@@ -15,4 +15,6 @@ body {
 
 .cell {
     border: 10px solid black;
+    font-size: 100px;
+    text-align: center;
 }
