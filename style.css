@@ -5,12 +5,105 @@
 
 body {
     background-color: #10b981;
+    font-family: "Rubik Vinyl", serif;
+    font-weight: 700;
 }
 
-.container {
-    display: grid;
-    grid-template: repeat(3, 300px) / repeat(3, 300px);
+button {
+    background-color: #a7f3d0;
+    font-family: "Rubik Vinyl", serif;
+    font-size: 30px;
+    font-weight: 700;
+    border: 5px solid #000000;
+    padding: 5px;
+}
+
+dialog {
+    background-color: #10b981;
+    font-family: "Rubik Vinyl", serif;
+    font-size: 30px;
+    font-weight: 700;
+    padding: 50px 100px;
+    border: 10px solid #000000;
     margin: auto;
+}
+
+::backdrop {
+    background-color: #022c22
+}
+
+header {
+    font-size: 100px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.symbol {
+    font-size: 100px;
+    padding: 0 25px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: end;
+    gap: 50px;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    background-color: #a7f3d0;
+    height: 30px;
+    font-family: "Rubik Vinyl", serif;
+    font-size: 30px;
+    font-weight: 700;
+    padding: 5px;
+    border: 0;
+}
+
+input:focus {
+    outline: none;
+}
+
+.main-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 75px;
+    margin: 20px;
+}
+
+h1 {
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.players {
+    word-spacing: 100px;
+}
+
+.result {
+    height: 100px;
+    font-size: 50px;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+    grid-template: repeat(3, 200px) / repeat(3, 200px);
 }
 
 .cell {
@@ -18,3 +111,29 @@ body {
     font-size: 100px;
     text-align: center;
 }
+
+[data-index="0"],
+[data-index="3"],
+[data-index="6"] {
+    border-left: 0;
+}
+
+[data-index="2"],
+[data-index="5"],
+[data-index="8"] {
+    border-right: 0;
+}
+
+[data-index="0"],
+[data-index="1"],
+[data-index="2"] {
+    border-top: 0;
+}
+
+[data-index="6"],
+[data-index="7"],
+[data-index="8"] {
+    border-bottom: 0;
+}
+
+
